@@ -10,12 +10,15 @@ const PacmanGame: React.FC = () => {
     // Dynamically import p5 to avoid SSR issues
     import('p5').then((p5) => {
       const sketch = (p: p5) => {
+        const PACMAN_SIZE = 40;
+        const SPEED = 3;
+        const MOUTH_SPEED = 5;
         let pacmanX = 300;
         let pacmanY = 300;
-        const pacmanSize = 50;
-        const speed = 2;
         let direction = 'RIGHT'; // Initial direction
         let isMoving = false; // Check if Pac-Man is moving
+        let mouthAngle = 30; // Initial mouth angle
+        let mouthDirection = 1; // 1 for opening, -1 for closing
 
         p.setup = () => {
           p.createCanvas(1000, 1000);
@@ -25,11 +28,21 @@ const PacmanGame: React.FC = () => {
           p.background(10);
 
           if (isMoving) {
-            // Move Pac-Man based on direction
-            if (direction === 'LEFT') pacmanX -= speed;
-            if (direction === 'RIGHT') pacmanX += speed;
-            if (direction === 'UP') pacmanY -= speed;
-            if (direction === 'DOWN') pacmanY += speed;
+            // Animate mouth opening and closing
+            mouthAngle += mouthDirection * MOUTH_SPEED;
+            if (mouthAngle >= 45 || mouthAngle <= 5) {
+              mouthDirection *= -1; // Reverse direction
+            }
+
+            // Move Pac-Man based on direction with collision detection:
+            if (direction === 'LEFT' && pacmanX - PACMAN_SIZE / 2 > 0)
+              pacmanX -= SPEED;
+            if (direction === 'RIGHT' && pacmanX + PACMAN_SIZE / 2 < p.width)
+              pacmanX += SPEED;
+            if (direction === 'UP' && pacmanY - PACMAN_SIZE / 2 > 0)
+              pacmanY -= SPEED;
+            if (direction === 'DOWN' && pacmanY + PACMAN_SIZE / 2 < p.height)
+              pacmanY += SPEED;
           }
 
           // Draw Pac-Man with rotation based on direction
@@ -42,7 +55,14 @@ const PacmanGame: React.FC = () => {
 
           // Draw Pac-Man
           p.fill(255, 255, 0);
-          p.arc(0, 0, pacmanSize, pacmanSize, p.radians(30), p.radians(-30));
+          p.arc(
+            0,
+            0,
+            PACMAN_SIZE,
+            PACMAN_SIZE,
+            p.radians(mouthAngle),
+            p.radians(360 - mouthAngle)
+          );
           p.pop();
         };
 

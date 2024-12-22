@@ -16,7 +16,6 @@ const PacmanGame: React.FC = () => {
         let pacmanX = 300;
         let pacmanY = 300;
         let direction = 'RIGHT'; // Initial direction
-        let isMoving = false; // Check if Pac-Man is moving
         let mouthAngle = 30; // Initial mouth angle
         let mouthDirection = 1; // 1 for opening, -1 for closing
 
@@ -27,23 +26,21 @@ const PacmanGame: React.FC = () => {
         p.draw = () => {
           p.background(10);
 
-          if (isMoving) {
-            // Animate mouth opening and closing
-            mouthAngle += mouthDirection * MOUTH_SPEED;
-            if (mouthAngle >= 45 || mouthAngle <= 5) {
-              mouthDirection *= -1; // Reverse direction
-            }
-
-            // Move Pac-Man based on direction with collision detection:
-            if (direction === 'LEFT' && pacmanX - PACMAN_SIZE / 2 > 0)
-              pacmanX -= SPEED;
-            if (direction === 'RIGHT' && pacmanX + PACMAN_SIZE / 2 < p.width)
-              pacmanX += SPEED;
-            if (direction === 'UP' && pacmanY - PACMAN_SIZE / 2 > 0)
-              pacmanY -= SPEED;
-            if (direction === 'DOWN' && pacmanY + PACMAN_SIZE / 2 < p.height)
-              pacmanY += SPEED;
+          // Animate mouth opening and closing
+          mouthAngle += mouthDirection * MOUTH_SPEED;
+          if (mouthAngle >= 45 || mouthAngle <= 5) {
+            mouthDirection *= -1; // Reverse direction
           }
+
+          // Move Pac-Man based on direction with collision detection:
+          if (direction === 'LEFT' && pacmanX - PACMAN_SIZE / 2 > 0)
+            pacmanX -= SPEED;
+          if (direction === 'RIGHT' && pacmanX + PACMAN_SIZE / 2 < p.width)
+            pacmanX += SPEED;
+          if (direction === 'UP' && pacmanY - PACMAN_SIZE / 2 > 0)
+            pacmanY -= SPEED;
+          if (direction === 'DOWN' && pacmanY + PACMAN_SIZE / 2 < p.height)
+            pacmanY += SPEED;
 
           // Draw Pac-Man with rotation based on direction
           p.push();
@@ -72,13 +69,6 @@ const PacmanGame: React.FC = () => {
           if (p.keyCode === p.RIGHT_ARROW) direction = 'RIGHT';
           if (p.keyCode === p.UP_ARROW) direction = 'UP';
           if (p.keyCode === p.DOWN_ARROW) direction = 'DOWN';
-
-          isMoving = true; // Start moving on key press
-        };
-
-        p.keyReleased = () => {
-          // Stop moving when the key is released
-          isMoving = false;
         };
       };
 

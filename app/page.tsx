@@ -2,7 +2,7 @@ import PacmanGame from './components/PacmanGame';
 
 export default function Home() {
   return (
-    <div>
+    <div className='flex justify-center items-center h-screen bg-black'>
       <PacmanGame />
     </div>
   );

@@ -42,7 +42,7 @@ const PacmanGame: React.FC = () => {
 
           // Draw Pac-Man
           p.fill(255, 255, 0);
-          p.arc(0, 0, pacmanSize, pacmanSize, p.radians(30), p.radians(330));
+          p.arc(0, 0, pacmanSize, pacmanSize, p.radians(30), p.radians(-30));
           p.pop();
         };
 

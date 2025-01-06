@@ -12,11 +12,19 @@ export const updatePacmanPosition = (
 ) => {
   const { x, y, size } = pacman;
 
-  if (direction === 'LEFT' && x - size / 2 > 0) {
+  if (direction === 'LEFT') {
     pacman.x -= speed;
+    if (x + size / 2 < 0) {
+      // Wrap around to the right
+      pacman.x = canvasSize + size / 2;
+    }
   }
-  if (direction === 'RIGHT' && x + size / 2 < canvasSize) {
+  if (direction === 'RIGHT') {
     pacman.x += speed;
+    if (x - size / 2 > canvasSize) {
+      // Wrap around to the left
+      pacman.x = -size / 2;
+    }
   }
   if (direction === 'UP' && y - size / 2 > 0) {
     pacman.y -= speed;

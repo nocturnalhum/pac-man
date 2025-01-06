@@ -38,3 +38,35 @@ export const animatePacmanMouth = (
   }
   return { mouthAngle, mouthDirection };
 };
+
+export interface Wall {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  corners: [number, number, number, number];
+}
+
+export const isCollidingWithWalls = (
+  pacman: Pacman,
+  walls: Wall[]
+): boolean => {
+  return walls.some((wall) => {
+    const pacmanLeft = pacman.x - pacman.size / 2;
+    const pacmanRight = pacman.x + pacman.size / 2;
+    const pacmanTop = pacman.y - pacman.size / 2;
+    const pacmanBottom = pacman.y + pacman.size / 2;
+
+    const wallLeft = wall.x;
+    const wallRight = wall.x + wall.width;
+    const wallTop = wall.y;
+    const wallBottom = wall.y + wall.height;
+
+    return (
+      pacmanRight > wallLeft &&
+      pacmanLeft < wallRight &&
+      pacmanBottom > wallTop &&
+      pacmanTop < wallBottom
+    );
+  });
+};

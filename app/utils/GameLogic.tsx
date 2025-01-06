@@ -14,7 +14,7 @@ export const updatePacmanPosition = (
 
   if (direction === 'LEFT') {
     pacman.x -= speed;
-    if (x + size / 2 < 0) {
+    if (pacman.x + size / 2 < 0) {
       // Wrap around to the right
       pacman.x = canvasSize + size / 2;
     }
